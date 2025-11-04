@@ -1,0 +1,107 @@
+# golangci-lint configuration for v1.62+
+version: 2
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - misspell
+    - revive
+    - unparam
+    - unconvert
+    - gocritic
+    - gocyclo
+    - dupl
+    - gosec
+    - nolintlint
+    - whitespace
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: false
+
+  govet:
+    enable-all: true
+
+  gocyclo:
+    min-complexity: 15
+
+  dupl:
+    threshold: 100
+
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - performance
+      - style
+    disabled-checks:
+      - whyNoLint
+      - unnamedResult
+
+  misspell:
+    locale: US
+
+  revive:
+    rules:
+      - name: exported
+        severity: warning
+        disabled: false
+      - name: indent-error-flow
+        severity: warning
+      - name: blank-imports
+        severity: warning
+      - name: context-as-argument
+        severity: warning
+      - name: dot-imports
+        severity: warning
+      - name: error-return
+        severity: warning
+      - name: error-strings
+        severity: warning
+      - name: error-naming
+        severity: warning
+      - name: if-return
+        severity: warning
+      - name: var-naming
+        severity: warning
+      - name: package-comments
+        severity: warning
+      - name: range
+        severity: warning
+      - name: time-naming
+        severity: warning
+      - name: var-declaration
+        severity: warning
+      - name: unexported-return
+        severity: warning
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - gocyclo
+        - errcheck
+        - dupl
+        - gosec
+        - gocritic
+    - path: string\.go
+      linters:
+        - gocritic
+      text: "unnecessaryDefer"
+    - path: optimization\.go
+      linters:
+        - gocyclo
+        - gocritic
+    - path: graph\.go
+      linters:
+        - gocyclo
+  max-issues-per-linter: 0
+  max-same-issues: 0
