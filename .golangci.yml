@@ -2,7 +2,6 @@ version: "2"
 
 run:
   timeout: 5m
-  tests: true
 
 linters:
   enable:
@@ -21,55 +20,3 @@ linters:
     - gosec
     - nolintlint
     - whitespace
-
-linters-settings:
-  errcheck:
-    check-type-assertions: true
-    check-blank: false
-
-  govet:
-    enable-all: true
-
-  gocyclo:
-    min-complexity: 15
-
-  dupl:
-    threshold: 100
-
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - performance
-      - style
-    disabled-checks:
-      - whyNoLint
-      - unnamedResult
-
-  misspell:
-    locale: US
-
-  revive:
-    enable-all-rules: true
-
-issues:
-  exclude-rules:
-    - path: _test\.go
-      linters:
-        - gocyclo
-        - errcheck
-        - dupl
-        - gosec
-        - gocritic
-    - path: string\.go
-      linters:
-        - gocritic
-      text: "unnecessaryDefer"
-    - path: optimization\.go
-      linters:
-        - gocyclo
-        - gocritic
-    - path: graph\.go
-      linters:
-        - gocyclo
-  max-issues-per-linter: 0
-  max-same-issues: 0
