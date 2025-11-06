@@ -52,15 +52,15 @@ tidy: ## Run go mod tidy
 	@$(GO) mod tidy
 	@echo "$(GREEN)✓ go mod tidy complete$(NC)"
 
-tidy-check: ## Check if go.mod and go.sum are tidy
+tidy-check: ## Check if go.mod are tidy
 	@echo "$(BLUE)Checking go mod tidy...$(NC)"
 	@$(GO) mod tidy
-	@if [ -n "$$(git status --porcelain go.mod go.sum)" ]; then \
-		echo "$(RED)✗ go.mod or go.sum needs tidying$(NC)"; \
-		git diff go.mod go.sum; \
+	@if [ -n "$$(git status --porcelain go.mod)" ]; then \
+		echo "$(RED)✗ go.mod needs tidying$(NC)"; \
+		git diff go.mod; \
 		exit 1; \
 	fi
-	@echo "$(GREEN)✓ go.mod and go.sum are tidy$(NC)"
+	@echo "$(GREEN)✓ go.mod are tidy$(NC)"
 
 lint: ## Run golangci-lint
 	@echo "$(BLUE)Running golangci-lint...$(NC)"

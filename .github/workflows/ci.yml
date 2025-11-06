@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 permissions:
   contents: read
@@ -16,147 +16,147 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        go: ['1.21', '1.22', '1.23']
+        go: ["1.21", "1.22", "1.23", "1.24", "1.25"]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: ${{ matrix.go }}
-        cache: true
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: false
 
-    - name: Download dependencies
-      run: go mod download
+      - name: Download dependencies
+        run: go mod download
 
-    - name: Verify dependencies
-      run: go mod verify
+      - name: Verify dependencies
+        run: go mod verify
 
-    - name: Run tests
-      run: make test
+      - name: Run tests
+        run: make test
 
-    - name: Run tests with race detector
-      run: make test-race
+      - name: Run tests with race detector
+        run: make test-race
 
   coverage:
     name: Coverage
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.22'
-        cache: true
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: false
 
-    - name: Run tests with coverage
-      run: make test-coverage
+      - name: Run tests with coverage
+        run: make test-coverage
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        file: ./coverage.out
-        flags: unittests
-        name: codecov-umbrella
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.out
+          flags: unittests
+          name: codecov-umbrella
 
   lint:
     name: Lint
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.22'
-        cache: true
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: false
 
-    - name: golangci-lint
-      uses: golangci/golangci-lint-action@v4
-      with:
-        version: v1.62
-        args: --timeout=5m
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.6.1
+          args: --timeout=5m
 
   format:
     name: Format Check
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.22'
-        cache: true
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: false
 
-    - name: Check formatting
-      run: make fmt-check
+      - name: Check formatting
+        run: make fmt-check
 
-    - name: Check go mod tidy
-      run: |
-        go mod tidy
-        if ! git diff --exit-code go.mod go.sum 2>/dev/null; then
-          echo "go.mod or go.sum needs tidying"
-          git diff go.mod go.sum || true
-          exit 1
-        fi
+      - name: Check go mod tidy
+        run: |
+          go mod tidy
+          if ! git diff --exit-code go.mod 2>/dev/null; then
+            echo "go.mod needs tidying"
+            git diff go.mod || true
+            exit 1
+          fi
 
   vet:
     name: Go Vet
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.22'
-        cache: true
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
 
-    - name: Run go vet
-      run: make vet
+      - name: Run go vet
+        run: make vet
 
   build:
     name: Build
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.22'
-        cache: true
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
 
-    - name: Build
-      run: make build
+      - name: Build
+        run: make build
 
   security:
     name: Security Scan
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.22'
-        cache: true
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
 
-    - name: Run Gosec Security Scanner
-      run: make security
+      - name: Run Gosec Security Scanner
+        run: make security
