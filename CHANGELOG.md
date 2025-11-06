@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5](https://github.com/reeshijoshi/go-distance/compare/v1.0.4...v1.0.5) (2025-11-06)
+
+
+### Bug Fixes
+
+* fmt ([0e59733](https://github.com/reeshijoshi/go-distance/commit/0e5973351bc36f888829b7f6131dab0954524e79))
+
 ## [1.0.4](https://github.com/reeshijoshi/go-distance/compare/v1.0.3...v1.0.4) (2025-11-06)
 
 
