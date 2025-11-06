@@ -1,9 +1,10 @@
 // Package distance provides distance metrics and optimization algorithms.
 //
-//nolint:gosec // G404: math/rand/v2 is intentionally used for optimization algorithms.
 // Cryptographic randomness is not required for these mathematical optimization functions
 // (simulated annealing, genetic algorithms, PSO, differential evolution).
 // Using crypto/rand would be unnecessarily slow and provide no security benefit.
+//
+//nolint:gosec // G404: math/rand/v2 is intentionally used for optimization algorithms.
 package distance
 
 import (
