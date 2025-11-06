@@ -1,9 +1,14 @@
-//nolint:gosec // math/rand is acceptable for optimization algorithms (not security-sensitive)
+// Package distance provides distance metrics and optimization algorithms.
+//
+//nolint:gosec // G404: math/rand/v2 is intentionally used for optimization algorithms.
+// Cryptographic randomness is not required for these mathematical optimization functions
+// (simulated annealing, genetic algorithms, PSO, differential evolution).
+// Using crypto/rand would be unnecessarily slow and provide no security benefit.
 package distance
 
 import (
 	"math"
-	"math/rand"
+	"math/rand/v2"
 )
 
 // OptimizationFunc represents a function to minimize/maximize
@@ -181,8 +186,8 @@ func GeneticAlgorithm(
 		newPopulation := make([]Individual, popSize)
 		for i := 0; i < popSize; i++ {
 			// Tournament selection
-			a := rand.Intn(popSize)
-			b := rand.Intn(popSize)
+			a := rand.IntN(popSize)
+			b := rand.IntN(popSize)
 			if population[a].Fitness < population[b].Fitness {
 				newPopulation[i] = population[a]
 			} else {
@@ -193,7 +198,7 @@ func GeneticAlgorithm(
 		// Crossover
 		for i := 0; i < popSize-1; i += 2 {
 			if rand.Float64() < crossoverRate {
-				point := rand.Intn(dimensions)
+				point := rand.IntN(dimensions)
 				for j := point; j < dimensions; j++ {
 					newPopulation[i].Genes[j], newPopulation[i+1].Genes[j] =
 						newPopulation[i+1].Genes[j], newPopulation[i].Genes[j]
@@ -666,18 +671,18 @@ func DifferentialEvolution(
 			indices := rand.Perm(popSize)
 			a, b, c := indices[0], indices[1], indices[2]
 			for a == i {
-				a = rand.Intn(popSize)
+				a = rand.IntN(popSize)
 			}
 			for b == i || b == a {
-				b = rand.Intn(popSize)
+				b = rand.IntN(popSize)
 			}
 			for c == i || c == a || c == b {
-				c = rand.Intn(popSize)
+				c = rand.IntN(popSize)
 			}
 
 			// Mutation and crossover
 			trial := make([]float64, dimensions)
-			jrand := rand.Intn(dimensions)
+			jrand := rand.IntN(dimensions)
 
 			for j := 0; j < dimensions; j++ {
 				if rand.Float64() < crossoverProb || j == jrand {
